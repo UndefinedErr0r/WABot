@@ -81,6 +81,10 @@
 			cmd_dog(chat);
 		}
 		
+		if(command.indexOf("!say") >= 0) {
+			cmd_say(chat, command);
+		}
+		
 	}
 	
 	
@@ -155,5 +159,10 @@
 		
 	}
 	
+	var cmd_say = function(chat, command) {
+		text = command.substr(command.indexOf("!say") + 4, command.length);
+		sendChatMessage(chat, text);
+		
+	}
 	
 })()
