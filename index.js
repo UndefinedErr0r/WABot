@@ -1,5 +1,5 @@
-#security.mixed_content.block_active_content
-#security.csp.enable
+//security.mixed_content.block_active_content
+//security.csp.enable
 (() => {
    
 	var mouseDownEvent = new Event('mousedown', { bubbles: true });
@@ -77,6 +77,10 @@
 			cmd_cat(chat);
 		}
 		
+		if(command.indexOf("!dog") >= 0) {
+			cmd_dog(chat);
+		}
+		
 	}
 	
 	
@@ -132,5 +136,24 @@
   
 		
 	}
+	
+	var cmd_dog = function(chat) {
+		var thechat = chat;
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				
+				data = JSON.parse(this.responseText);
+
+
+				sendChatMessage(thechat, data.message);
+			}
+		};
+		xhttp.open("GET", "https://dog.ceo/api/breeds/image/random", true);
+		xhttp.send(); 
+  
+		
+	}
+	
 	
 })()
