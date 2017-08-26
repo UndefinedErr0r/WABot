@@ -1,3 +1,5 @@
+#security.mixed_content.block_active_content
+#security.csp.enable
 (() => {
    
 	var mouseDownEvent = new Event('mousedown', { bubbles: true });
