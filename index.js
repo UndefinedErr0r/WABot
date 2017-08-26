@@ -3,6 +3,10 @@
 	var mouseDownEvent = new Event('mousedown', { bubbles: true });
 	var lastMessage_Previous = "";
 
+	var resetLastPrevious = function() {
+		lastMessage_Previous = "";
+	}
+	
 	var check = function () {
 	   
 	   
@@ -25,6 +29,7 @@
 			lastMessage = lastMessage.title;
 			if(lastMessage.indexOf("!") >= 0 && lastMessage != lastMessage_Previous) {
 				lastMessage_Previous = lastMessage;
+				setTimeout(resetLastPrevious, 3500);
 				lastMessage = lastMessage.substr(lastMessage.indexOf("!"), lastMessage.length - 1);
 		   
 				console.log("Command: " + lastMessage);
@@ -60,10 +65,14 @@
 	setTimeout(check, 3000);
 	
 	var processCommand = function(chat, command) {
-		sendChatMessage(chat, "You typed a command :)");
+		sendChatMessage(chat, "Command received!");
 		
 		if(command.indexOf("!ecs") >= 0) {
 			setTimeout(function() { console.log("dleay"); sendChatMessage(chat, "Delay test!"); }, 5000); 
+		}
+		
+		if(command.indexOf("!cat") >= 0) {
+			cmd_cat(chat);
 		}
 		
 	}
@@ -98,6 +107,27 @@
 					
 		}, 1000);
 				
+		
+	}
+	
+	
+	
+	var cmd_cat = function(chat) {
+		var thechat = chat;
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				
+				parser = new DOMParser();
+				xmlDoc = parser.parseFromString(this.responseText,"text/xml");
+
+
+				sendChatMessage(thechat, xmlDoc.getElementsByTagName("url")[0].textContent);
+			}
+		};
+		xhttp.open("GET", "http://thecatapi.com/api/images/get?format=xml&type=jpg", true);
+		xhttp.send(); 
+  
 		
 	}
 	
