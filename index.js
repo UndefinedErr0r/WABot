@@ -93,7 +93,7 @@
 	setTimeout(check, 3000);
 	
 	var processCommand = function(chat, command) {
-		sendChatMessage(chat, "Command received!");
+		sendChatMessage(chat, "Command received.");
 		
 		if(command.indexOf("!ecs") >= 0) {
 			setTimeout(function() { console.log("dleay"); sendChatMessage(chat, "Delay test!"); }, 5000); 
@@ -111,6 +111,9 @@
 			cmd_say(chat, command);
 		}
 		
+		if(command.indexOf("!ud") >= 0) {
+			cmd_ud(chat, command);
+		}
 	}
 	
 	
@@ -187,6 +190,35 @@
 			}
 		};
 		xhttp.open("GET", "https://dog.ceo/api/breeds/image/random", true);
+		xhttp.send(); 
+  
+		
+	}
+	
+	var cmd_ud = function(chat, command) {
+		var thechat = chat;
+		text = command.substr(command.indexOf("!ud") + 4, command.length);
+		
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				
+				data = JSON.parse(this.responseText);
+				
+				if(data.list.length != 0) {
+					var res = data.list[0].definition;
+					sendChatMessage(thechat, res);
+				} else {
+					sendChatMessage(thechat, "No definitions found!");
+				}
+				
+				
+
+				
+			}
+		};
+		text = text.replace(/[^A-Za-z0-9]/g, "");
+		xhttp.open("GET", "https://api.urbandictionary.com/v0/define?term=" + text.trim(), true);
 		xhttp.send(); 
   
 		
