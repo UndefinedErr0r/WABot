@@ -38,7 +38,8 @@
 
 				setTimeout(() => { 
 					
-					
+					//unread = document.querySelector('.msg-unread');
+					//if(unread) unread.dispatchEvent(mouseDownEvent);
 					processCommand(firstchat, lastMessage);
 					
 					
@@ -47,10 +48,12 @@
 			} else {
 				//Go Back to the first chat
 				setTimeout(() => { 
-					document.querySelector('.chat').dispatchEvent(new Event('mousedown', {bubbles:true})); // click another
+					//document.querySelector('.chat').dispatchEvent(new Event('mousedown', {bubbles:true})); // click another
 				}, 1000);
 				//check for new messages 3 seconds later
 				setTimeout(check, 3000);
+				
+				dummyTypeInData();
 			}
 	   } else {
 		   //check for new messages 3 seconds later
@@ -95,8 +98,6 @@
 		setTimeout(() => { 
 		
 			document.querySelector('.input').innerText = message;
-			//uievent = document.createEvent("UIEvents");
-			//uievent.initUIEvent("input", true, true, window, 1);
 			uievent = new UIEvent("input", { bubbles: true, cancelable: true, view: window, detail: 1});
 			document.querySelector('.input').dispatchEvent(uievent);
 			
@@ -107,7 +108,7 @@
 				
 				//Go Back to the first chat
 				setTimeout(() => { 
-					document.querySelector('.chat').dispatchEvent(new Event('mousedown', {bubbles:true})); // click another
+					//document.querySelector('.chat').dispatchEvent(new Event('mousedown', {bubbles:true})); // click another
 				}, 400);
 				
 				//check for new messages 3 seconds later
@@ -118,6 +119,15 @@
 		}, 1000);
 				
 		
+	}
+	
+	
+	var dummyTypeInData = function() {
+		setTimeout(() => { 
+			document.querySelector('.input').innerText = " ";
+			uievent = new UIEvent("input", { bubbles: true, cancelable: true, view: window, detail: 1});
+			document.querySelector('.input').dispatchEvent(uievent);
+		}, 1000);
 	}
 	
 	
