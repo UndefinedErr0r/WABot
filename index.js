@@ -1,6 +1,8 @@
 //security.mixed_content.block_active_content
 //security.csp.enable
 (() => {
+	
+	var chatLastMessages = [];
    
 	var mouseDownEvent = new Event('mousedown', { bubbles: true });
 	var lastMessage_Previous = "";
@@ -11,23 +13,44 @@
 	
 	var check = function () {
 	   
-	   
-	   console.log("Checking for unread messages...");
-
-	   
-	   firstchat = document.querySelector('.unread.chat');
-	   
-	   if(firstchat == null) {
+		allChats = document.querySelectorAll('.chat');
+		console.log(new Date(), "Total chats: " + allChats.length);
+		
+		console.log("Checking for new messages... ");
+		
+		firstchat = null;
+		
+		for(var x = 0; x < allChats.length; x++) {
+			//chatLastMessages[]
+			chatTitle = allChats[x].querySelector('.chat-title').innerText;
+			chatMessage = "";
+			chatMessageObject = allChats[x].querySelector('.last-msg');
+			if(chatMessageObject != undefined) chatMessage = chatMessageObject.title;
+			
+			//Compare old value of last message first..
+			if(chatMessage == chatLastMessages[chatTitle]) continue;
+			
+			chatLastMessages[chatTitle] = chatMessage;
+			firstchat = allChats[x];
+			break;
+			
+			
+		}
+		
+		
+		//firstchat = document.querySelector('.unread.chat');
+		
+		if(firstchat == null) {
 			console.log("Nothing found!");
 			setTimeout(check, 3000);
 			return;
-	   }
-	   
-	   var senderDisplayName = firstchat.querySelector('.chat-title').innerText;
-	   console.log("Clicking chat from " + senderDisplayName);
-	   firstchat.dispatchEvent(mouseDownEvent);
-	   var lastMessage = firstchat.querySelector('.last-msg');
-	   if(lastMessage != undefined) {
+		}
+
+		var senderDisplayName = firstchat.querySelector('.chat-title').innerText;
+		console.log("Clicking chat from " + senderDisplayName);
+		firstchat.dispatchEvent(mouseDownEvent);
+		var lastMessage = firstchat.querySelector('.last-msg');
+		if(lastMessage != undefined) {
 			lastMessage = lastMessage.title;
 			if(lastMessage.indexOf("!") >= 0 && lastMessage != lastMessage_Previous) {
 				lastMessage_Previous = lastMessage;
