@@ -93,7 +93,7 @@
 	setTimeout(check, 3000);
 	
 	var processCommand = function(chat, command) {
-		sendChatMessage(chat, "Command received.");
+		//sendChatMessage(chat, "Command received.");
 		
 		if(command.indexOf("!ecs") >= 0) {
 			setTimeout(function() { console.log("dleay"); sendChatMessage(chat, "Delay test!"); }, 5000); 
