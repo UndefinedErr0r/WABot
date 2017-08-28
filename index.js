@@ -99,21 +99,27 @@
 			setTimeout(function() { console.log("dleay"); sendChatMessage(chat, "Delay test!"); }, 5000); 
 		}
 		
-		if(command.indexOf("!cat") >= 0) {
+		else if(command.indexOf("!cat") >= 0) {
 			cmd_cat(chat);
 		}
 		
-		if(command.indexOf("!dog") >= 0) {
+		else if(command.indexOf("!dog") >= 0) {
 			cmd_dog(chat);
 		}
 		
-		if(command.indexOf("!say") >= 0) {
+		else if(command.indexOf("!say") >= 0) {
 			cmd_say(chat, command);
 		}
 		
-		if(command.indexOf("!ud") >= 0) {
+		else if(command.indexOf("!ud") >= 0) {
 			cmd_ud(chat, command);
 		}
+		
+		else if(command.indexOf("!tl") >= 0) {
+			cmd_tl(chat, command);
+		}
+		
+		else setTimeout(check, 3000);
 	}
 	
 	
@@ -229,5 +235,49 @@
 		sendChatMessage(chat, text);
 		
 	}
+	
+	
+	
+	var cmd_tl = function(chat, command) {
+		text = command.substr(command.indexOf("!tl") + 4, command.length);
+		text = text.replace(/[^A-Za-z0-9?.!-\s]/g, "");
+		console.log("->'" + text + "'")
+		
+		parts = text.split(" ");
+		
+		
+		
+		if(!parts || parts < 3) return sendChatMessage(chat, "Incorrect syntax. !tl [source] [destination] [text]");
+		
+		src = parts[0];
+		target = parts[1];
+		q = "";
+		
+		for(i = 2; i < parts.length; i++)
+			q += parts[i] + " ";
+		
+		
+		console.log(q);
+		
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				
+				res = JSON.parse(this.responseText);
+				//console.log(res.data.translations[0].translatedText);
+				sendChatMessage(chat, res.data.translations[0].translatedText);
+			}
+		};
+		
+
+		xhttp.open("POST", "https://translation.googleapis.com/language/translate/v2", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send("key=AIzaSyAaTWcZdolQQ6-GBkDEzLsHRYzvTUTaw6M&q="+q+"&source="+src+"&target="+target+""); 
+	}
+	
+	
+	
+	
+	
 	
 })()
